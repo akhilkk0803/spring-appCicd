@@ -9,3 +9,5 @@ service:
  type: LoadBalancer
  port: 9090
  targetPort: 9090
+serviceAccount:
+  create: true

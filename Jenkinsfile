@@ -37,7 +37,7 @@ pipeline {
                 git clean -fd
                 git add myapp/values.yaml
                 git commit -m "Updated Helm image tag to %BUILD_NUMBER%"
-                git push https://%GIT_USER%:%GIT_PASS%@github.com/akhilkk0803/spring-appCicd.git master --force
+                git push https://%GIT_USER%:%GIT_PASS%@github.com/akhilkk0803/spring-appCicd.git master 
             """
         }
     }

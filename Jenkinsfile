@@ -8,10 +8,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 checkout scm
-                bat 'git fetch --all'
-                bat 'git checkout master'
-                bat 'git reset --hard origin/master'
-                bat 'git pull origin master --rebase'
+               
             }
         }
         stage('Build & Push Docker Image') {
@@ -32,6 +29,10 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
                     bat """
+                        git fetch --all
+                        git checkout master
+                        git reset --hard origin/master
+                        git pull origin master --rebase
                         git config --global user.name "JENKINS"
                         git config --global user.email "jenkins@ci.com"
                         git add myapp/values.yaml
@@ -43,7 +44,7 @@ pipeline {
         }
         stage('Trigger ArgoCD Sync') {
             steps {
-                bat "argocd app sync myapp"
+                bat "C:\\Windows\\System32\\argocd.exe app sync myapp"
             }
         }
     }

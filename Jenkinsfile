@@ -32,6 +32,7 @@ pipeline {
                         git fetch --all
                         git checkout master
                         git reset --hard origin/master
+                        git clean -fd  
                         git pull origin master --rebase
                         git config --global user.name "JENKINS"
                         git config --global user.email "jenkins@ci.com"

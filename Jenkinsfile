@@ -21,7 +21,7 @@ pipeline {
         }
         stage('Update Helm values.yaml') {
             steps {
-                bat 'powershell -Command "(Get-Content helm/values.yaml) -replace \'tag: .*\', \'tag: %IMAGE_TAG%\' | Set-Content helm/values.yaml"'
+                bat 'powershell -Command "(Get-Content myapp/values.yaml) -replace \'tag: .*\', \'tag: %IMAGE_TAG%\' | Set-Content myapp/values.yaml"'
             }
         }
         stage('Commit & Push Changes to GitHub') {

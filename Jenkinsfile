@@ -32,12 +32,12 @@ pipeline {
                         git config --global user.name "JENKINS"
                         git config --global user.email "jenkins@ci.com"
                         git fetch origin master
-                        git reset --hard origin/master  # Force sync Jenkins with GitHub
+                        git reset --hard HEAD  # Force sync Jenkins with GitHub
                         git clean -fd                  # Remove any untracked files in Jenkins workspace
                         git pull origin master --rebase || exit 0
                         git add myapp/values.yaml
                         git commit -m "Updated Helm image tag to %BUILD_NUMBER%"
-                        git push https://%GIT_USER%:%GIT_PASS%@github.com/akhilkk0803/spring-appCicd.git master 
+                        git push https://%GIT_USER%:%GIT_PASS%@github.com/akhilkk0803/spring-appCicd.git master --force
                     """
                 }
             }

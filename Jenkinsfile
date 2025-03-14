@@ -44,7 +44,7 @@ pipeline {
         }
         stage('Trigger ArgoCD Sync') {
             steps {
-                bat "argocd app sync myapp"
+                bat "C:\\Windows\\System32\\argocd.exe sync myapp"
             }
         }
     }

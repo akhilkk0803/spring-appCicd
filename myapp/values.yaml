@@ -9,5 +9,15 @@ service:
  type: LoadBalancer
  port: 9090
  targetPort: 9090
+
+hpa:
+  enabled: false
+
+ingress:
+  enabled: false
+autoscaling:
+  enabled: false
 serviceAccount:
-  create: true
+  enabled: false
+
+

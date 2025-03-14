@@ -48,7 +48,7 @@ pipeline {
         script {
             bat """
                 C:\\Windows\\System32\\argocd.exe login localhost:8090 --username admin --password WuICYQ0qjP3djeO0 --insecure
-                C:\\Windows\\System32\\argocd.exe app sync myapp
+                C:\\Windows\\System32\\argocd.exe app sync spring-app
             """
         }
     }

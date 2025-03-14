@@ -25,22 +25,24 @@ pipeline {
                 bat 'powershell -Command "(Get-Content myapp/values.yaml) -replace \'tag: .*\', \'tag: %IMAGE_TAG%\' | Set-Content myapp/values.yaml"'
             }
         }
-        stage('Commit & Push Changes to GitHub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                    bat """
-                        git config --global user.name "JENKINS"
-                        git config --global user.email "jenkins@ci.com"
-                        git fetch origin master
-                        git reset --hard HEAD  # Force sync Jenkins with GitHub
-                        git clean -fd                  # Remove any untracked files in Jenkins workspace
-                        git add myapp/values.yaml
-                        git commit -m "Updated Helm image tag to %BUILD_NUMBER%"
-                        git push https://%GIT_USER%:%GIT_PASS%@github.com/akhilkk0803/spring-appCicd.git master --force
-                    """
-                }
-            }
+       stage('Commit & Push Changes to GitHub') {
+    steps {
+        withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+            bat """
+                git config --global user.name "JENKINS"
+                git config --global user.email "jenkins@ci.com"
+                git fetch origin
+                git checkout master || git checkout main  # Ensure we are on the correct branch
+                git reset --hard origin/master || git reset --hard origin/main
+                git clean -fd
+                git add myapp/values.yaml
+                git commit -m "Updated Helm image tag to %BUILD_NUMBER%"
+                git push https://%GIT_USER%:%GIT_PASS%@github.com/akhilkk0803/spring-appCicd.git master --force
+            """
         }
+    }
+}
+
         stage('Trigger ArgoCD Sync') {
     steps {
         script {

@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 
 metadata:
-    name: myapp
+    name: spring-app
     namespace: argocd
 spec:
     destination:
@@ -10,7 +10,7 @@ spec:
         server: https://kubernetes.default.svc
     project: default
     source:
-        repoURL: https://github.com/akhilkk0803/spring-app-cicd.git
+        repoURL: https://github.com/akhilkk0803/spring-appCicd
         path: myapp
         targetRevision: HEAD
         helm:

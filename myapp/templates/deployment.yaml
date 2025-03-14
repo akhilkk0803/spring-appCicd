@@ -1,0 +1,24 @@
+apiVersion: app/v1
+
+kind: Deployment
+metadata:
+  name: {{.Release.Name}}
+  annotations:
+    rollme: {{randAlphaNum 5 | quote}}
+
+
+spec:
+  replicas: {{.Values.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{.Release.Name}}
+  template:
+    metadata:
+      labels:
+        app: {{.Release.Name}}
+    spec:
+      containers:
+        -name: {{.Release.Name}}
+        image: {{.Values.image.repository}}
+        ports:
+          -containerPort:9090

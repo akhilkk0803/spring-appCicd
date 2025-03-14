@@ -1,0 +1,11 @@
+replicaCount: 2
+image:
+  repository: akhilkk03/spring-app
+  tag: latest
+  pullPolicy: IfNotPresent
+  
+
+service:
+ type: LoadBalancer
+ port: 9090
+ targetPort: 9090

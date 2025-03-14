@@ -8,6 +8,10 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 checkout scm
+                bat 'git fetch --all'
+                bat 'git checkout master'
+                bat 'git reset --hard origin/master'
+                bat 'git pull origin master --rebase'
             }
         }
         stage('Build & Push Docker Image') {

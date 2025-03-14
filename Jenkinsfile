@@ -13,33 +13,33 @@ pipeline {
         stage('Build & Push Docker Image') {
             steps {
                 withDockerRegistry([credentialsId: 'docker-hub-credentials', url: 'https://index.docker.io/v1/']) {
-                    sh 'mvn clean package'
-                    sh "docker build -t $DOCKER_IMAGE:$IMAGE_TAG ."
-                    sh "docker push $DOCKER_IMAGE:$IMAGE_TAG"
+                    bat 'mvn clean package'
+                    bat "docker build -t %DOCKER_IMAGE%:%IMAGE_TAG% ."
+                    bat "docker push %DOCKER_IMAGE%:%IMAGE_TAG%"
                 }
             }
         }
         stage('Update Helm values.yaml') {
             steps {
-                sh "sed -i 's|tag: .*|tag: $IMAGE_TAG|' helm/values.yaml"
+                bat 'powershell -Command "(Get-Content helm/values.yaml) -replace \'tag: .*\', \'tag: %IMAGE_TAG%\' | Set-Content helm/values.yaml"'
             }
         }
         stage('Commit & Push Changes to GitHub') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github-creds', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-                    sh """
+                    bat """
                         git config --global user.name "JENKINS"
                         git config --global user.email "jenkins@ci.com"
                         git add helm/values.yaml
-                        git commit -m "Updated Helm image tag to $BUILD_NUMBER"
-                        git push https://$GIT_USER:$GIT_PASS@github.com/akhilkk0803/spring-app-cicd.git master
+                        git commit -m "Updated Helm image tag to %BUILD_NUMBER%"
+                        git push https://%GIT_USER%:%GIT_PASS%@github.com/akhilkk0803/spring-app-cicd.git main
                     """
                 }
             }
         }
         stage('Trigger ArgoCD Sync') {
             steps {
-                sh "argocd app sync myapp"
+                bat "argocd app sync myapp"
             }
         }
     }

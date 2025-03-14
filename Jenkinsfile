@@ -31,6 +31,7 @@ pipeline {
                     bat """
                         git config --global user.name "JENKINS"
                         git config --global user.email "jenkins@ci.com"
+                        git fetch origin master
                         git reset --hard HEAD  # Force sync Jenkins with GitHub
                         git clean -fd                  # Remove any untracked files in Jenkins workspace
                         git add myapp/values.yaml
